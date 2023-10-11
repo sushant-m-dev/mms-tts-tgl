@@ -2,8 +2,8 @@ from transformers import VitsModel, AutoTokenizer
 import torch
 import scipy
 
-model = VitsModel.from_pretrained("facebook/mms-tts-en")
-tokenizer = AutoTokenizer.from_pretrained("facebook/mms-tts-en")
+model = VitsModel.from_pretrained("facebook/mms-tts-eng")
+tokenizer = AutoTokenizer.from_pretrained("facebook/mms-tts-eng")
 
 text = "are you interested in buying loan from our company at 5 percent interest rate?"
 inputs = tokenizer(text, return_tensors="pt")
