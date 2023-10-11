@@ -1,4 +1,4 @@
-import torch
+import torch , numpy
 from transformers import VitsTokenizer, VitsModel, set_seed
 import scipy
 import sys,logging
@@ -16,7 +16,7 @@ set_seed(555)  # make deterministic
 with torch.no_grad():
    outputs = model(**inputs)
 
-waveform = outputs.waveform[0]
+waveform = outputs.waveform[0].cpu.numpy
 logging.info(waveform)
 
 scipy.io.wavfile.write("techno.wav", rate=model.config.sampling_rate, data=waveform)
