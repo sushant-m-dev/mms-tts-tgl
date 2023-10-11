@@ -1,15 +1,17 @@
-from transformers import VitsModel, AutoTokenizer
 import torch
+from transformers import VitsTokenizer, VitsModel, set_seed
 import scipy
 
+tokenizer = VitsTokenizer.from_pretrained("facebook/mms-tts-eng")
 model = VitsModel.from_pretrained("facebook/mms-tts-eng")
-tokenizer = AutoTokenizer.from_pretrained("facebook/mms-tts-eng")
 
-text = "are you interested in buying loan from our company at 5 percent interest rate?"
-inputs = tokenizer(text, return_tensors="pt")
+inputs = tokenizer(text="Hello - my dog is cute", return_tensors="pt")
+
+set_seed(555)  # make deterministic
 
 with torch.no_grad():
-    output = model(**inputs).waveform
+   outputs = model(**inputs)
+
 waveform = outputs.waveform[0]
 
 scipy.io.wavfile.write("techno.wav", rate=model.config.sampling_rate, data=waveform)
