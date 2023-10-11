@@ -2,10 +2,10 @@ from transformers import VitsModel, AutoTokenizer
 import torch
 import scipy
 
-model = VitsModel.from_pretrained("facebook/mms-tts-tgl")
-tokenizer = AutoTokenizer.from_pretrained("facebook/mms-tts-tgl")
+model = VitsModel.from_pretrained("facebook/mms-tts-en")
+tokenizer = AutoTokenizer.from_pretrained("facebook/mms-tts-en")
 
-text = "interesado ka bang bumili ng pautang mula sa aming kumpanya sa 5% na rate ng interes?"
+text = "are you interested in buying loan from our company at 5 percent interest rate?"
 inputs = tokenizer(text, return_tensors="pt")
 
 with torch.no_grad():
