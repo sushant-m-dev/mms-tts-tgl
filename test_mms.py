@@ -10,6 +10,7 @@ inputs = tokenizer(text, return_tensors="pt")
 
 with torch.no_grad():
     output = model(**inputs).waveform
+waveform = outputs.waveform[0]
 
+scipy.io.wavfile.write("techno.wav", rate=model.config.sampling_rate, data=waveform)
 
-scipy.io.wavfile.write("techno.wav", rate=model.config.sampling_rate, data=output)
