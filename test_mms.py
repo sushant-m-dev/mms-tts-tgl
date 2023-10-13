@@ -11,13 +11,14 @@ model = VitsModel.from_pretrained("facebook/mms-tts-tgl")
 
 inputs = tokenizer(text="Kumusta , gusto mo bang marinig ang tungkol sa aming bagong pag-aalok ng pautang na higit pa sa mga rate ng merkado", return_tensors="pt")
 
-set_seed(555)  # make deterministic
+#set_seed(555)  # make deterministic
 
 with torch.no_grad():
-   outputs = model(**inputs)
+   output= model(**inputs).waveform
 
 # waveform = outputs.waveform[0]
-logging.info(outputs.waveform.shape)
-scipy.io.wavfile.write("techno.wav", rate=model.config.sampling_rate, data=outputs.numpy())
+logging.info(output.waveform.shape)
+
+scipy.io.wavfile.write("techno.wav", rate=model.config.sampling_rate, data=output.float().numpy())
 
 
