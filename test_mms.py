@@ -18,6 +18,6 @@ with torch.no_grad():
 
 # waveform = outputs.waveform[0]
 logging.info(outputs.waveform.shape)
-scipy.io.wavfile.write("techno.wav", rate=model.config.sampling_rate, data=outputs.float().numpy())
+scipy.io.wavfile.write("techno.wav", rate=model.config.sampling_rate, data=outputs.numpy())
 
 
