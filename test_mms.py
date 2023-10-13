@@ -16,8 +16,8 @@ set_seed(555)  # make deterministic
 with torch.no_grad():
    outputs = model(**inputs)
 
-waveform = outputs.waveform[0].cpu.numpy
-logging.info(waveform)
+# waveform = outputs.waveform[0]
+logging.info(outputs.waveform.shape)
+scipy.io.wavfile.write("techno.wav", rate=model.config.sampling_rate, data=outputs.float().numpy())
 
-scipy.io.wavfile.write("techno.wav", rate=model.config.sampling_rate, data=waveform)
 
