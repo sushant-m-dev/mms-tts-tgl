@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package prompt;
+
+service PromptService {
+    rpc ProcessPrompt (PromptRequest) returns (PromptResponse);
+}
+
+message PromptRequest {
+    string prompt = 1;
+}
+
+message PromptResponse {
+    bool success = 1;
+    string message = 2;
+}
