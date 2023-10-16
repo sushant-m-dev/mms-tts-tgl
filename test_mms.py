@@ -1,6 +1,6 @@
 import torch , numpy
 from transformers import VitsTokenizer, VitsModel, set_seed
-import scipy
+import scipy,time
 import sys,logging
 
 # Configure logging to write log messages to stdout
@@ -14,11 +14,13 @@ inputs = tokenizer(text="Kumusta , gusto mo bang marinig ang tungkol sa aming ba
 #set_seed(555)  # make deterministic
 
 with torch.no_grad():
+   start_time = time.time()
    output= model(**inputs).waveform
+   end_time = time.time()
 
 # waveform = outputs.waveform[0]
-logging.info(output.waveform.shape)
+logging.info("Generated output in {} second".format(end_time - start_time))
 
-scipy.io.wavfile.write("techno.wav", rate=model.config.sampling_rate, data=output.float().numpy())
+scipy.io.wavfile.write("techno.wav", rate=model.config.sampling_rate, data=output.float().numpy().T)
 
 
