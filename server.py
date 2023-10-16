@@ -32,7 +32,7 @@ class PromptService(prompt_service_pb2_grpc.PromptServiceServicer):
 
             # Save the generated audio as a WAV file
             output_file = "output.wav"
-            scipy.io.wavfile.write(output_file, rate=model.config.sampling_rate, data=output.float().numpy())
+            scipy.io.wavfile.write(output_file, rate=model.config.sampling_rate, data=output.float().numpy().T)
 
             #Return success and the path to the generated audio file
             #return prompt_service_pb2.PromptResponse(success=True, message = updated_text)
