@@ -36,7 +36,7 @@ class PromptService(prompt_service_pb2_grpc.PromptServiceServicer):
 
             #Return success and the path to the generated audio file
             #return prompt_service_pb2.PromptResponse(success=True, message = updated_text)
-            return prompt_service_pb2.PromptResponse(success=True, message="Audio generated successfully", audio_path=output_file)
+            return prompt_service_pb2.PromptResponse(success=True, message="Audio generated successfully")
 
         except Exception as e:
             logging.error(f"Error generating audio: {str(e)}")
