@@ -6,7 +6,7 @@ import prompt_service_pb2_grpc
 import torch
 from transformers import VitsTokenizer, VitsModel
 import scipy
-import logging
+import logging , time
 import sys
 
 #Configure logging to write log messages to stdout
@@ -28,7 +28,9 @@ class PromptService(prompt_service_pb2_grpc.PromptServiceServicer):
             inputs = tokenizer(text=request.prompt, return_tensors="pt")
 
             with torch.no_grad():
+                start_time = time.time()
                 output = model(**inputs).waveform
+                end_time = time.time()
 
             # Save the generated audio as a WAV file
             output_file = "output.wav"
@@ -36,7 +38,7 @@ class PromptService(prompt_service_pb2_grpc.PromptServiceServicer):
 
             #Return success and the path to the generated audio file
             #return prompt_service_pb2.PromptResponse(success=True, message = updated_text)
-            return prompt_service_pb2.PromptResponse(success=True, message="Audio generated successfully")
+            return prompt_service_pb2.PromptResponse(success=True, message="Audio generated successfully in time {}s".format(end_time-start_time))
 
         except Exception as e:
             logging.error(f"Error generating audio: {str(e)}")
