@@ -1,25 +1,33 @@
+import numpy as np
+import os
+import json
+import sys
 import time
-from TTS.utils.manage import ModelManager
-from TTS.utils.synthesizer import Synthesizer
 import torch
 
-# torch.set_num_threads(1)
+from pathlib import Path
+from TTS.tts.models.vits import Vits
+from TTS.tts.configs.vits_config import VitsConfig
+from TTS.utils.audio.numpy_transforms import save_wav
+from TTS.utils.manage import ModelManager
 
-path = "/home/mllopart/PycharmProjects/ONNX/venv/lib/python3.10/site-packages/TTS/.models.json"
+config = VitsConfig()
+config.load_json("/mnt/mydata/vits_onnx/test_server/mms-tts-tgl/eng/config.json")
+vits = Vits.init_from_config(config)
+vits.load_fairseq_checkpoint(config,  "/mnt/mydata/vits_onnx/test_server/mms-tts-tgl/eng/G_100000.pth")
 
-model_manager = ModelManager(path)
 
-model_path, config_path, model_item = model_manager.download_model("tts_models/en/ljspeech/vits")
+vits.export_onnx()
+vits.load_onnx("coqui_mms.onnx")
 
-syn = Synthesizer(
-    tts_checkpoint=model_path,
-    tts_config_path=config_path,
-)
+text_prompt = "Hello, this is a test to determine if our model is working"
 
-text1 = "The field of space exploration has continually fascinated humanity, igniting the collective imagination and driving scientific and technological advancement. From the first successful launch of Sputnik 1 by the USSR in 1957, it became clear that space was a new frontier, ripe for exploration. Space exploration has offered us a unique vantage point to better understand our universe, revealing startling and wondrous phenomena like black holes, nebulae, and countless galaxies far beyond our own. It has also allowed us to study our home planet in ways that would have been impossible from the ground, enhancing our understanding of Earth's atmosphere, weather systems, and the impact of human activity on the global environment."
+text_inputs = np.asarray(
+    vits.tokenizer.text_to_ids(text_prompt, language="en"),
+    dtype=np.int64,
+)[None, :]
 
-start_time = time.time()
-outputs1 = syn.tts(text1)
-end_time = time.time()
-print(f"Time taken for inference 1: {end_time - start_time} seconds")
-syn.save_wav(outputs1, "normal_1.wav")
+start = time.time()
+audio1 = vits.inference_onnx(text_inputs)
+end = time.time()
+print("Inference 1 Time Taken: ", end - start, " seconds")
