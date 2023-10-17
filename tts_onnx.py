@@ -11,25 +11,25 @@ from TTS.tts.configs.vits_config import VitsConfig
 from TTS.utils.audio.numpy_transforms import save_wav
 from TTS.utils.manage import ModelManager
 
-# config = VitsConfig()
+config = VitsConfig()
 
-# config.load_json("/mnt/mydata/vits_onnx/test_server/mms-tts-tgl/eng/config.json")
-# vits = Vits.init_from_config(config)
+config.load_json("/mnt/mydata/vits_onnx/test_server/mms-tts-tgl/eng/config.json")
+vits = Vits.init_from_config(config)
 
-Vits.load_fairseq_checkpoint(config = "/mnt/mydata/vits_onnx/test_server/mms-tts-tgl/eng/config.json", checkpoint_dir = "/mnt/mydata/vits_onnx/test_server/mms-tts-tgl/eng/G_100000.pth")
+vits.load_fairseq_checkpoint(config = config, checkpoint_dir = "/mnt/mydata/vits_onnx/test_server/mms-tts-tgl/eng/G_100000.pth")
 
 
-Vits.export_onnx()
-Vits.load_onnx("coqui_mms.onnx")
+vits.export_onnx()
+vits.load_onnx("coqui_mms.onnx")
 
 text_prompt = "Hello, this is a test to determine if our model is working"
 
 text_inputs = np.asarray(
-    Vits.tokenizer.text_to_ids(text_prompt, language="en"),
+    vits.tokenizer.text_to_ids(text_prompt, language="en"),
     dtype=np.int64,
 )[None, :]
 
 start = time.time()
-audio1 = Vits.inference_onnx(text_inputs)
+audio1 = vits.inference_onnx(text_inputs)
 end = time.time()
 print("Inference 1 Time Taken: ", end - start, " seconds")
