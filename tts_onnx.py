@@ -11,10 +11,12 @@ from TTS.tts.configs.vits_config import VitsConfig
 from TTS.utils.audio.numpy_transforms import save_wav
 from TTS.utils.manage import ModelManager
 
-config = VitsConfig()
-config.load_json("/mnt/mydata/vits_onnx/test_server/mms-tts-tgl/eng/config.json")
-vits = Vits.init_from_config(config)
-vits.load_fairseq_checkpoint(config,  "/mnt/mydata/vits_onnx/test_server/mms-tts-tgl/eng/G_100000.pth")
+# config = VitsConfig()
+
+# config.load_json("/mnt/mydata/vits_onnx/test_server/mms-tts-tgl/eng/config.json")
+# vits = Vits.init_from_config(config)
+
+vits.load_fairseq_checkpoint(config = "/mnt/mydata/vits_onnx/test_server/mms-tts-tgl/eng/config.json", checkpoint_dir = "/mnt/mydata/vits_onnx/test_server/mms-tts-tgl/eng/G_100000.pth")
 
 
 vits.export_onnx()
