@@ -13,10 +13,10 @@ from TTS.utils.manage import ModelManager
 
 config = VitsConfig()
 
-config.load_json("/mnt/mydata/vits_onnx/test_server/mms-tts-tgl/eng/config.json")
+config.load_json("/mnt/mydata/ONNX_models/config.json")
 vits = Vits.init_from_config(config)
 
-vits.load_fairseq_checkpoint(config = config, checkpoint_dir = "/mnt/mydata/vits_onnx/test_server/mms-tts-tgl/eng/G_100000.pth")
+vits.load_fairseq_checkpoint(config = config, checkpoint_dir = "/mnt/mydata/ONNX_models/G_100000.pth")
 
 
 vits.export_onnx()
