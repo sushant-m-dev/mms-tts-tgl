@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+service TextToSpeech {
+    rpc ConvertTextToSpeech (TextRequest) returns (AudioResponse);
+}
+
+message TextRequest {
+    string text = 1;
+}
+
+message AudioResponse {
+    bytes audio = 1;
+}
