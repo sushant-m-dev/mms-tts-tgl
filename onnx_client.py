@@ -15,10 +15,10 @@ def main():
             break
         request = TextRequest(text=text_prompt)
 
-    response = stub.ConvertTextToSpeech(request)
-    audio_data = response.audio
+        response = stub.ConvertTextToSpeech(request)
+        audio_data = response.audio
 
-    logging.info(audio_data)
+        logging.info(audio_data)
 
     # Handle the audio data (e.g., save it as a WAV file or play it)
 
