@@ -1,7 +1,7 @@
 import grpc
 from tts_pb2 import TextRequest
 from tts_pb2_grpc import TextToSpeechStub
-import logging
+import logging,sys
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
