@@ -18,7 +18,10 @@ def main():
         response = stub.ConvertTextToSpeech(request)
         audio_data = response.audio
 
-        logging.info(audio_data)
+        with open("output.txt", "w") as file:
+            file.write(str(audio_data))
+
+        #logging.info(audio_data)
 
     # Handle the audio data (e.g., save it as a WAV file or play it)
 

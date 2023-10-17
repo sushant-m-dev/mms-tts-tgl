@@ -1,12 +1,14 @@
 import grpc
 from concurrent import futures
-import time
+import time,sys,logging
 import numpy as np
 from tts_pb2 import TextRequest, AudioResponse
 from tts_pb2_grpc import TextToSpeechServicer, add_TextToSpeechServicer_to_server
 
 from TTS.tts.models.vits import Vits
 from TTS.tts.configs.vits_config import VitsConfig
+
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 class TextToSpeechService(TextToSpeechServicer):
     def __init__(self, vits_model):
@@ -20,7 +22,11 @@ class TextToSpeechService(TextToSpeechServicer):
             dtype=np.int64,
         )[None, :]
 
+        start_time = time.time()
         audio_data = self.vits.inference_onnx(text_inputs)
+        end_time = time.time()
+
+        logging.info("Total time taken is {}".format(end_time-start_time))
 
         return AudioResponse(audio=audio_data.tobytes())
 
