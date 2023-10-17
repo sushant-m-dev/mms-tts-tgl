@@ -3,6 +3,8 @@ from tts_pb2 import TextRequest
 from tts_pb2_grpc import TextToSpeechStub
 import logging
 
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+
 def main():
     channel = grpc.insecure_channel('localhost:50051')
     stub = TextToSpeechStub(channel)
